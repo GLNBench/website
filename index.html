@@ -183,7 +183,10 @@
     font-family:var(--font-mono); font-size:12.5px; color:var(--muted); letter-spacing:.02em;
   }
   .figframe .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+  .figframe .diagram-scroll{overflow-x:auto}
+  .figframe picture{display:block}
   .figframe img{display:block; width:100%; height:auto; background:#fff}
+  @media (max-width:760px){ .figframe .diagram-scroll picture{min-width:900px} }
 
   /* findings */
   .find{display:grid; grid-template-columns:repeat(2,1fr); gap:18px}
@@ -338,7 +341,12 @@
     <p>Every configuration flows through the same path: apply the selected label-noise process, assemble a backbone with a robustness method, train with early stopping while probing oversmoothing, then evaluate on the clean test split.</p></div>
     <div class="figframe">
       <div class="cap"><span class="dot"></span> pipeline overview&ensp;·&ensp;<span class="mono">config.yaml → Cartesian sweep → mean ± std</span></div>
-      <img src="teaser-control-flow.webp" width="1672" height="941" loading="lazy" decoding="async" alt="GLNBench code control flow: config.yaml expands into isolated runs; each run loads graph splits, adds train and validation label noise, combines a GNN backbone with a robustness method, trains with validation and early stopping, restores the best checkpoint, evaluates on clean test labels, and writes classification, oversmoothing, compute, carbon, and JSON results.">
+      <div class="diagram-scroll" role="region" aria-label="Scrollable pipeline diagram" tabindex="0">
+        <picture>
+          <source srcset="teaser-control-flow.svg" type="image/svg+xml">
+          <img src="teaser-control-flow.webp" width="1600" height="1100" loading="lazy" decoding="async" alt="GLNBench two-row code control flow: config.yaml expands into isolated runs; each run loads graph splits, adds train and validation label noise, combines a GNN backbone with a robustness method, trains with validation and early stopping, restores the best checkpoint, evaluates on clean test labels, and writes classification, oversmoothing, compute, carbon, and JSON results.">
+        </picture>
+      </div>
     </div>
   </div>
 </section>
