@@ -333,7 +333,7 @@
     <p>Every configuration flows through the same path: apply the selected label-noise process, assemble a backbone with a robustness method, train with early stopping while probing oversmoothing, then evaluate on the clean test split.</p></div>
     <div class="figframe">
       <div class="cap"><span class="dot"></span> pipeline overview&ensp;·&ensp;<span class="mono">config.yaml → Cartesian sweep → mean ± std</span></div>
-      <img src="images/teaser-control-flow.webp" width="1672" height="941" loading="lazy" decoding="async" alt="GLNBench code control flow: config.yaml expands into isolated runs; each run loads graph splits, adds train and validation label noise, combines a GNN backbone with a robustness method, trains with validation and early stopping, restores the best checkpoint, evaluates on clean test labels, and writes classification, oversmoothing, compute, carbon, and JSON results.">
+      <img src="teaser-control-flow.webp" width="1672" height="941" loading="lazy" decoding="async" alt="GLNBench code control flow: config.yaml expands into isolated runs; each run loads graph splits, adds train and validation label noise, combines a GNN backbone with a robustness method, trains with validation and early stopping, restores the best checkpoint, evaluates on clean test labels, and writes classification, oversmoothing, compute, carbon, and JSON results.">
     </div>
   </div>
 </section>
