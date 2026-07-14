@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Build a validated GLNBench experiment configuration and copy the exact commands needed to run it.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <meta name="color-scheme" content="light dark">
+  <title>Experiment Builder · GLNBench</title>
+  <link rel="stylesheet" href="builder.css">
+</head>
+<body>
+<a class="skip" href="#builder">Skip to experiment builder</a>
+<header>
+  <a class="brand" href="index.html" aria-label="GLNBench home"><span class="mark" aria-hidden="true">⌁</span> GLNBench</a>
+  <nav aria-label="Builder navigation">
+    <a href="index.html">Overview</a>
+    <a href="https://github.com/GLNBench/GLNBench">GitHub ↗</a>
+    <button id="theme" type="button" aria-label="Toggle color theme">◐</button>
+  </nav>
+</header>
+
+<main id="builder">
+  <section class="intro">
+    <p class="eyebrow">Configuration, without guesswork</p>
+    <h1>Build a runnable GLNBench experiment.</h1>
+    <p>Select supported components, tune open parameters, and get validated YAML plus the exact local command. Everything happens in this browser—no configuration or personal data is transmitted.</p>
+    <div class="presets" aria-label="Configuration presets">
+      <button class="preset active" data-preset="quick" type="button">Quick CPU demo</button>
+      <button class="preset" data-preset="research" type="button">Research run</button>
+      <button class="preset" data-preset="large" type="button">Large-graph safe</button>
+    </div>
+  </section>
+
+  <div class="layout">
+    <form id="configForm" class="card form-card" novalidate>
+      <div class="section-head"><span>01</span><div><h2>Data and noise</h2><p>Choose the graph and annotation process.</p></div></div>
+      <div class="fields">
+        <label>Dataset<select id="dataset"></select></label>
+        <label>Noise model<select id="noiseType"></select></label>
+        <label>Noise rate<input id="noiseRate" type="number" min="0" max="1" step="0.05" required></label>
+        <label>Data directory<input id="dataRoot" type="text" value="data" maxlength="120" spellcheck="false"></label>
+        <label class="check"><input id="normalize" type="checkbox"> Normalize node features</label>
+      </div>
+
+      <div class="section-head"><span>02</span><div><h2>Model and method</h2><p>Combine a GNN backbone with a robustness strategy.</p></div></div>
+      <div class="fields">
+        <label>Backbone<select id="backbone"></select></label>
+        <label>Modified GNN variant <small>used by tunedGNN only</small><select id="innerGnn"></select></label>
+        <label>Method<select id="method"></select></label>
+        <label>Hidden channels<input id="hidden" type="number" min="1" max="8192" step="1" required></label>
+        <label>GNN layers<input id="layers" type="number" min="1" max="100" step="1" required></label>
+        <label>Dropout<input id="dropout" type="number" min="0" max="1" step="0.05" required></label>
+        <label>Normalization<select id="normalization"></select></label>
+        <label>Jumping knowledge<select id="jk"></select></label>
+        <label class="check"><input id="selfLoop" type="checkbox"> Add self-loops</label>
+        <label class="check"><input id="residual" type="checkbox"> Residual connections</label>
+      </div>
+
+      <div class="method-parameters" id="methodParameters">
+        <div class="method-parameters-title">
+          <div><h3 id="methodParametersTitle">Method hyperparameters</h3>
+          <p>Release benchmark defaults. Change any value to customize this run.</p></div>
+          <button id="resetMethodParams" type="button">Reset defaults</button>
+        </div>
+        <div class="fields" id="methodParameterFields"></div>
+        <p class="empty-parameters" id="emptyMethodParameters">This method has no additional hyperparameters.</p>
+      </div>
+
+      <div class="section-head"><span>03</span><div><h2>Training</h2><p>Set compute, stopping, and evaluation behavior.</p></div></div>
+      <div class="fields">
+        <label>Device<select id="device"></select></label>
+        <label>Learning mode<select id="mode"></select></label>
+        <label>Learning rate<input id="lr" type="number" min="0.00000001" max="10" step="0.001" required></label>
+        <label>Weight decay<input id="weightDecay" type="number" min="0" max="10" step="0.0001" required></label>
+        <label>Epochs<input id="epochs" type="number" min="1" max="100000" step="1" required></label>
+        <label>Patience<input id="patience" type="number" min="1" max="100000" step="1" required></label>
+        <label>Independent runs<input id="runs" type="number" min="1" max="10000" step="1" required></label>
+        <label>Base seed<input id="seed" type="number" min="0" max="2147483647" step="1" required></label>
+      </div>
+
+      <details>
+        <summary>Batching, sweeps and method parameters</summary>
+        <div class="fields advanced">
+          <label>Batch size <small>blank = full graph</small><input id="batchSize" type="number" min="1" max="10000000" step="1" placeholder="e.g. 512"></label>
+          <label>Sampler<select id="sampler"></select></label>
+          <label class="wide">Noise-rate sweep <small>comma-separated values in [0,1]</small><input id="rateSweep" type="text" placeholder="e.g. 0.1, 0.2, 0.4" spellcheck="false"></label>
+          <label class="wide">Advanced method overrides <small>Optional JSON object merged over the controls above; useful for experimental parameters not yet in the manifest.</small><textarea id="methodParams" rows="4" spellcheck="false" placeholder='e.g. {"experimental_parameter": 0.5}'></textarea></label>
+        </div>
+      </details>
+    </form>
+
+    <aside class="output-column">
+      <section class="card summary" aria-live="polite">
+        <div><span class="status-dot" id="statusDot"></span><strong id="statusText">Configuration ready</strong></div>
+        <p><b id="experimentCount">1</b> experiment configuration × <b id="runCount">1</b> run</p>
+        <ul id="messages"></ul>
+      </section>
+
+      <section class="card output">
+        <div class="tabs" role="tablist" aria-label="Generated output">
+          <button class="tab active" data-tab="yaml" role="tab" aria-selected="true" type="button">config.yaml</button>
+          <button class="tab" data-tab="command" role="tab" aria-selected="false" type="button">Run commands</button>
+        </div>
+        <pre id="yamlOutput" tabindex="0"></pre>
+        <pre id="commandOutput" class="hidden" tabindex="0"></pre>
+        <div class="actions">
+          <button id="copyOutput" class="primary" type="button">Copy YAML</button>
+          <button id="downloadYaml" type="button">Download</button>
+          <button id="copyLink" type="button">Copy share link</button>
+        </div>
+      </section>
+
+      <section class="card run-note">
+        <h2>Want a zero-setup demonstration?</h2>
+        <p>The Colab quickstart runs a small CPU-friendly preset. Free hosted resources are not suitable for every large sweep.</p>
+        <a class="colab" href="https://colab.research.google.com/github/GLNBench/GLNBench/blob/main/examples/quickstart.ipynb">Open quickstart in Colab ↗</a>
+      </section>
+      <p class="version">Builder schema <span id="schemaVersion"></span> · generated output targets the public GLNBench runner.</p>
+    </aside>
+  </div>
+</main>
+
+<script src="builder-manifest.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>

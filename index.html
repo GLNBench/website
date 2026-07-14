@@ -272,6 +272,7 @@
     </a>
     <nav class="navlinks" aria-label="Primary navigation">
       <a href="#benchmark">Benchmark</a>
+      <a href="builder.html">Build an experiment</a>
       <a href="#findings">Findings</a>
       <a href="#start">Quick start</a>
       <a href="#cite">Cite</a>
@@ -291,7 +292,11 @@
     <h1 class="title">When labels lie, the <span class="u">graph spreads it.</span></h1>
     <p class="lede">A unified, reproducible benchmark for graph neural networks under noisy supervision. We benchmark <b>12 robustness methods plus a Standard baseline</b>, then stress-test them where it counts — <b>strong backbones, heterophily, scale, and cost</b> — not just clean citation graphs.</p>
     <div class="cta">
-      <a class="btn btn-primary" href="https://github.com/GLNBench/GLNBench">
+      <a class="btn btn-primary" href="builder.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M6 14v6"/></svg>
+        Build an experiment
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/GLNBench/GLNBench">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
         View on GitHub
       </a>
@@ -430,7 +435,7 @@
   <div class="wrap">
     <span class="eyebrow">Reproducible by design</span>
     <div class="sechead"><h2>Run the whole thing in three steps.</h2>
-    <p>Pinned dependencies, a Cartesian sweep syntax in one YAML, and incremental execution that resumes where it stopped.</p></div>
+    <p>Pinned dependencies, a Cartesian sweep syntax in one YAML, and incremental execution that resumes where it stopped. Prefer a guided start? The <a class="link" href="builder.html">Experiment Builder</a> creates and validates the configuration for you.</p></div>
     <div class="startgrid" style="margin-top:30px">
       <div>
         <pre><span class="c"># 1 · install (pinned: torch 2.2.1, PyG 2.5.3)</span>
@@ -491,6 +496,7 @@ python3 main.py <span class="p">-c</span> config.yaml
     <div>An extensible library for reproducible research on robust graph learning under label noise.</div>
     <div style="display:flex; gap:22px">
       <a href="https://github.com/GLNBench/GLNBench">GitHub</a>
+      <a href="builder.html">Experiment builder</a>
       <a href="#benchmark">Benchmark</a>
       <a href="#start">Quick start</a>
     </div>

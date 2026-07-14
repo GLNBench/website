@@ -1,0 +1,64 @@
+name: Sync benchmark manifest
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-builder-manifest
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download canonical manifest
+        run: |
+          curl --fail --location --retry 3 \
+            https://raw.githubusercontent.com/GLNBench/GLNBench/main/benchmark_manifest.json \
+            --output /tmp/benchmark_manifest.json
+
+      - name: Render and validate browser manifest
+        run: |
+          python3 scripts/render_manifest.py /tmp/benchmark_manifest.json builder-manifest.js
+          node --check builder-manifest.js
+          node --check builder.js
+
+      - name: Open synchronization pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SYNC_BRANCH: automation/sync-builder-manifest
+        run: |
+          if git diff --quiet -- builder-manifest.js; then
+            echo "Builder manifest is already current."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$SYNC_BRANCH"
+          git add builder-manifest.js
+
+          changed="$(git diff --cached --name-only)"
+          test "$changed" = "builder-manifest.js"
+
+          git commit -m "Sync benchmark builder manifest"
+          git push --force-with-lease origin "$SYNC_BRANCH"
+
+          if [ "$(gh pr list --head "$SYNC_BRANCH" --state open --json number --jq length)" -eq 0 ]; then
+            gh pr create \
+              --base main \
+              --head "$SYNC_BRANCH" \
+              --title "Sync benchmark builder manifest" \
+              --body "Automated update from GLNBench/GLNBench's canonical benchmark_manifest.json. Only builder-manifest.js is changed."
+          fi
