@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Benchmarking GNN Robustness under Label Noise</title>
-<meta name="description" content="A unified benchmark of 13 method configurations across 24 datasets, 9 label-noise models, and 7 GNN backbones — measuring accuracy, oversmoothing, and compute.">
+<meta name="description" content="A unified benchmark of 13 method configurations across 24 datasets, 9 label-noise models, and 8 GNN backbone configurations — measuring accuracy, oversmoothing, and compute.">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Benchmarking GNN Robustness under Label Noise">
-<meta property="og:description" content="A reproducible benchmark of 12 robustness methods plus a Standard baseline across 24 graph datasets, 9 label-noise models, and 7 GNN backbones.">
+<meta property="og:description" content="A reproducible benchmark of 12 robustness methods plus a Standard baseline across 24 graph datasets, 9 label-noise models, and 8 GNN backbone configurations.">
 <style>
   :root{
     --paper:#eef1f2; --panel:#ffffff; --panel-2:#f5f7f8;
@@ -311,7 +311,7 @@
       <div class="stat" role="listitem"><div class="n">13</div><div class="l">method configurations</div></div>
       <div class="stat" role="listitem"><div class="n">24</div><div class="l">graph datasets</div></div>
       <div class="stat" role="listitem"><div class="n">9</div><div class="l">label-noise models</div></div>
-      <div class="stat" role="listitem"><div class="n">7</div><div class="l">GNN backbones</div></div>
+      <div class="stat" role="listitem"><div class="n">8</div><div class="l">GNN backbone configurations</div></div>
     </div>
   </div>
 </div>
@@ -371,11 +371,11 @@
     </div></div>
 
     <div class="grid g-2" style="margin-top:36px; gap:36px">
-      <div><div class="kist" style="font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:14px">7 backbones</div>
+      <div><div class="kist" style="font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:14px">8 backbone configurations</div>
         <div class="chips">
           <span class="chip">GCN</span><span class="chip">GAT</span><span class="chip">GATv2</span>
           <span class="chip">GIN</span><span class="chip">GPS</span>
-          <span class="chip base">GCN* <small>tuned</small></span><span class="chip base">GAT* <small>tuned</small></span>
+          <span class="chip base">GCN* <small>tuned</small></span><span class="chip base">GAT* <small>tuned</small></span><span class="chip base">GraphSAGE* <small>tuned</small></span>
         </div>
       </div>
       <div><div class="kist" style="font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:14px">9 label-noise models</div>
